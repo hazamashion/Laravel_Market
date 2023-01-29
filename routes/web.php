@@ -31,7 +31,10 @@ Route::get('/profile/edit_image', 'ProfileController@editImage')->name('profile.
 
 //出品関連
 Route::get('/users/{user}/exhibitions', 'UserController@exhibitions')->name('users.exhibitions');
+////新規出品
 Route::get('/items/create', 'ItemController@create')->name('items.create');
+Route::post('/items', 'ItemController@store')->name('items.store');
+////商品編集
 Route::get('/items/{item}/edit', 'ItemController@edit')->name('items.edit');
 Route::get('/items/{item}/edit_image', 'ItemController@editImage')->name('items.edit_image');
 
