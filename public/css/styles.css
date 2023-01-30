@@ -14,3 +14,26 @@
 .success {
   color: green;
 }
+/* 削除ボタン用のスタイル */
+.delete {
+  display: inline;
+}
+/* トップページのスタイル */
+.items {
+  padding: 0;
+}
+.item {
+  margin-bottom: 30px;
+  list-style: none;
+  border-top: solid 1px black;
+  border-bottom: solid 1px black;
+}
+.body_main_top {
+  display: flex;
+}
+.body_main_top_img {
+  width: 200px;
+}
+.body_main_top_img img{
+  width: 100%;
+}

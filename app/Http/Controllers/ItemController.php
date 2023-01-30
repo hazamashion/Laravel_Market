@@ -50,6 +50,20 @@ class ItemController extends Controller
         ]);
     }
     
+    public function destroy($id){
+        $user = \Auth::user();
+        $item = Item::find($id);
+        
+        //画像の削除
+        \Storage::disk('public')->delete($item->image);
+        
+        //レコードの削除
+        $item->delete();
+        
+        session()->flash('success', '削除しました');
+        return redirect()->route('users.exhibitions', $user);
+    }
+    
     public function show(){
         return view('items.show', [
             'title' => '商品詳細',

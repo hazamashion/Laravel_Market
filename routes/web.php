@@ -18,11 +18,7 @@ Route::get('/welcom', function () {
 Auth::routes();
 
 //トップページ
-Route::get('/', function () {
-    return view('top',[
-        'title' => 'Market'
-    ]);
-})->name('top');
+Route::get('/', 'TopController@index')->name('top');
 
 //プロフィール関連
 Route::get('/users/{user}', 'UserController@show')->name('users.show');
@@ -37,6 +33,8 @@ Route::post('/items', 'ItemController@store')->name('items.store');
 ////商品編集
 Route::get('/items/{item}/edit', 'ItemController@edit')->name('items.edit');
 Route::get('/items/{item}/edit_image', 'ItemController@editImage')->name('items.edit_image');
+////商品削除
+Route::delete('/items/{item}', 'ItemController@destroy')->name('items.destroy');
 
 //購入関連
 ////商品詳細
