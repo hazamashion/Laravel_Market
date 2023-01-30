@@ -32,6 +32,7 @@ Route::get('/items/create', 'ItemController@create')->name('items.create');
 Route::post('/items', 'ItemController@store')->name('items.store');
 ////商品編集
 Route::get('/items/{item}/edit', 'ItemController@edit')->name('items.edit');
+Route::patch('/items/{item}', 'ItemController@update')->name('items.update');
 Route::get('/items/{item}/edit_image', 'ItemController@editImage')->name('items.edit_image');
 ////商品削除
 Route::delete('/items/{item}', 'ItemController@destroy')->name('items.destroy');

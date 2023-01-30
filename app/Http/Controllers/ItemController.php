@@ -6,6 +6,7 @@ use App\Category;
 use App\Item;
 use Illuminate\Http\Request;
 use App\Http\Requests\ItemRequest;
+use App\Http\Requests\ItemEditRequest;
 
 class ItemController extends Controller
 {
@@ -38,10 +39,23 @@ class ItemController extends Controller
         return redirect()->route('items.show', $user);
     }
     
-    public function edit(){
+    public function edit($id){
+        $item = Item::find($id);
+        $categories = Category::all();
+        
         return view('items.edit', [
             'title' => '商品情報編集',
+            'item' => $item,
+            'categories' => $categories,
         ]);
+    }
+    
+    public function update($id, ItemEditRequest $request){
+        $item = Item::find($id);
+        $item->update($request->only(['name', 'destroy', 'price', 'category_id']));
+        
+        session()->flash('success', '商品を編集しました。');
+        return redirect()->route('items.show', $item);
     }
     
     public function editImage(){
