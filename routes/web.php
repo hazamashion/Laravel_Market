@@ -39,8 +39,11 @@ Route::get('/items/{item}/edit', 'ItemController@edit')->name('items.edit');
 Route::get('/items/{item}/edit_image', 'ItemController@editImage')->name('items.edit_image');
 
 //購入関連
+////商品詳細
 Route::get('/items/{item}', 'ItemController@show')->name('items.show');
+////購入確認
 Route::get('/items/{item}/confirm', 'ItemController@confirm')->name('items.confirm');
+////購入確定
 Route::get('/items/{item}/finish', 'ItemController@finish')->name('items.finish');
 
 //そのほか

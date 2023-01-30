@@ -25,7 +25,7 @@ return [
     'different'            => ':attributeには:otherと異なる値を入力してください。',
     'digits'               => ':attributeには:digits桁の数値を入力してください。',
     'digits_between'       => ':attributeには:min〜:max桁の数値を入力してください。',
-    'dimensions'           => ':attributeの画像サイズが不正です。',
+    'dimensions'           => ':attributeのサイズが不正です。(幅・高さは50~1000px)',
     'distinct'             => '指定された:attributeは既に存在しています。',
     'email'                => ':attributeがメールアドレスの形式ではありません。',
     'exists'               => '指定された:attributeは存在しません。',
@@ -87,6 +87,9 @@ return [
         'name' => '名前',
         'email' => 'メールアドレス',
         'password' => 'パスワード',
+        'description' => '商品説明',
+        'price' => '価格',
+        'image' => '画像',
         ],
 
 ];

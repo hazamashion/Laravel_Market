@@ -18,6 +18,7 @@ class ItemController extends Controller
     }
     
     public function store(ItemRequest $request){
+        $user = \Auth::user();
         //画像投稿処理
         $path = '';
         $image = $request->file('image');
@@ -26,7 +27,7 @@ class ItemController extends Controller
             $path = $image->store('photos', 'public');
         }
         Item::create([
-            'user_id' => \Auth::user()->id,
+            'user_id' => $user->id,
             'name' => $request->name,
             'description' => $request->description,
             'category_id' => $request->category_id,
@@ -34,7 +35,7 @@ class ItemController extends Controller
             'image' => $path,//ファイルパスを保存
         ]);
         session()->flash('success', '投稿を追加しました');
-        return redirect()->route('top');
+        return redirect()->route('items.show', $user);
     }
     
     public function edit(){
