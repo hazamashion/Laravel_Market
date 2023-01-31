@@ -7,6 +7,7 @@ use App\Item;
 use Illuminate\Http\Request;
 use App\Http\Requests\ItemRequest;
 use App\Http\Requests\ItemEditRequest;
+use App\Http\Requests\ItemEditImageRequest;
 
 class ItemController extends Controller
 {
@@ -58,10 +59,34 @@ class ItemController extends Controller
         return redirect()->route('items.show', $item);
     }
     
-    public function editImage(){
+    public function editImage($id){
+        $item = Item::find($id);
+        
         return view('items.edit_image', [
             'title' => '商品画像変更',
+            'item' => $item,
         ]);
+    }
+    
+    public function updateImage($id, ItemEditImageRequest $request){
+        $item = Item::find($id);
+        //画像投稿処理
+        $path = '';
+        $image = $request->file('image');
+        
+        //publicディスク(storage/app/public/)のphotosディレクトリに保存
+        $path = $image->store('photos', 'public');
+        
+        //変更前の画像の削除
+        \Storage::disk('public')->delete(\Storage::url($item->image));
+        
+        //ファイルパスをテーブルに保存
+        $item->update([
+            'image' => $path,
+        ]);
+        
+        session()->flash('success', '商品を編集しました。');
+        return redirect()->route('items.show', $item);        
     }
     
     public function destroy($id){
@@ -78,9 +103,14 @@ class ItemController extends Controller
         return redirect()->route('users.exhibitions', $user);
     }
     
-    public function show(){
+    public function show($id){
+        $item = Item::find($id);
+        $category = Category::find($item->category_id);
+        
         return view('items.show', [
             'title' => '商品詳細',
+            'item' => $item,
+            'category' => $category,
         ]);
     }
     
