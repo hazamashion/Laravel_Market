@@ -26,7 +26,8 @@
                             </div>
 
                             <div class="body_main_content">
-                                商品名:{{ $item->name }}
+                                商品名:{{ $item->name }} {{ $item->price }}
+                                {{ $item->soldItem() ? '売り切れ' : '出品中' }}
                                 カテゴリ:
                                 ({{ $item->created_at }})
                             </div>

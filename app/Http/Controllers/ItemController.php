@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Item;
+use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Requests\ItemRequest;
 use App\Http\Requests\ItemEditRequest;
@@ -114,13 +115,20 @@ class ItemController extends Controller
         ]);
     }
     
-    public function confirm(){
+    public function confirm($id){
+        $item = Item::find($id);
+        
+        $sold = Order::where('item_id', $item->id)->exists();
+        // dd($sold);
         return view('items.confirm', [
             'title' => '購入確認',
+            'item' => $item,
+            'sold' => $sold,
         ]);
     }
     
     public function finish(){
+        //ここでOrder::createで売れた商品,購入者をレコードに追加
         return view('items.finish', [
             'title' => '購入確定',
         ]);
