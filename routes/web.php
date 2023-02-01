@@ -43,6 +43,8 @@ Route::delete('/items/{item}', 'ItemController@destroy')->name('items.destroy');
 Route::get('/items/{item}', 'ItemController@show')->name('items.show');
 ////購入確認
 Route::get('/items/{item}/confirm', 'ItemController@confirm')->name('items.confirm');
+////購入処理
+Route::post('/items/{item}', 'ItemController@storeOrder')->name('items.store_order');
 ////購入確定
 Route::get('/items/{item}/finish', 'ItemController@finish')->name('items.finish');
 

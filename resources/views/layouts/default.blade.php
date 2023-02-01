@@ -19,7 +19,14 @@
             {{ \Session::get('success') }}
         </div>
     @endif
- 
+    
+    {{-- 売り切れメッセージを出力 --}}
+    @if (\Session::has('sold'))
+        <div class="sold">
+            {{ \Session::get('sold') }}
+        </div>
+    @endif
+    
     @yield('content')
 </body>
 </html>

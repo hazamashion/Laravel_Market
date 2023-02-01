@@ -24,16 +24,9 @@
         {{ $item->description }}
     </div>
     <div>
-        @if( $item->soldItem() === false )
-            <form action="{{ route('items.finish', $item) }}">
-                @csrf
-                <input type="submit" value="内容を確認し､購入する">
-            </form>
-        @else
-            <form action="{{ route('items.show', $item) }}">
-                @csrf
-                <input type="submit" value="内容を確認し､購入する">
-            </form>
-        @endif
+        <form method="post" action="{{ route('items.store_order', $item) }}">
+            @csrf
+            <input type="submit" value="内容を確認し､購入する">
+        </form>
     </div>
 @endsection

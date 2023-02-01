@@ -37,7 +37,7 @@ class ItemController extends Controller
             'price' => $request->price,
             'image' => $path,//ファイルパスを保存
         ]);
-        session()->flash('success', '投稿を追加しました');
+        session()->flash('success', '商品を追加しました');
         return redirect()->route('items.show', $user);
     }
     
@@ -127,10 +127,28 @@ class ItemController extends Controller
         ]);
     }
     
-    public function finish(){
-        //ここでOrder::createで売れた商品,購入者をレコードに追加
+    public function storeOrder($id, Request $request){
+        $item = Item::find($id);
+        
+        if( $item->soldItem() === false ){
+        Order::create([
+            'user_id' => \Auth::user()->id,
+            'item_id' => $item->id,
+        ]);
+        
+        session()->flash('success', '購入が完了しました。');
+        return redirect()->route('items.finish', $item);
+        } else {
+            session()->flash('', '申し訳ありません。ちょっと前に売り切れました。');
+            return redirect()->route('items.show', $item);
+        }
+    }
+    
+    public function finish($id){
+        $item = Item::find($id);
         return view('items.finish', [
             'title' => '購入確定',
+            'item' => $item,
         ]);
     }
 }
