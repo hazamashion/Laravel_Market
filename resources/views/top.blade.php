@@ -28,6 +28,11 @@
                             <div class="body_main_content">
                                 商品名:{{ $item->name }} {{ $item->price }}
                                 {{ $item->soldItem() ? '売り切れ' : '出品中' }}
+                                <a class="like_button">{{ $item->isLikedBy(Auth::user()) ? '★' : '☆' }}</a>
+                                <form method="post" class="like" action="{{ route('items.toggle_like', $item) }}">
+                                    @csrf
+                                    @method('patch')
+                                </form>
                                 カテゴリ:
                                 ({{ $item->created_at }})
                             </div>
@@ -42,4 +47,13 @@
           <li>商品はありません。</li>
         @endforelse
     </ul>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      /* global $ */
+      $('.like_button').each(function(){
+        $(this).on('click', function(){
+          $(this).next().submit();
+        });
+      });
+    </script>
 @endsection

@@ -8,6 +8,7 @@ class Item extends Model
 {
     protected $fillable = ['user_id', 'name', 'description', 'category_id', 'price', 'image'];
     
+    //商品のカテゴリー名表示用
     public function category(){
         return $this->belongsTo('App\Category');
     }
@@ -24,5 +25,20 @@ class Item extends Model
         //Ordersテーブルに商品のidが存在するならtrue、つまり売り切れ
         $result = Order::where('item_id', $this->id)->exists();
         return $result;
+    }
+    
+    public function likedUsers(){
+        return $this->belongsToMany('App\User', 'likes');
+    }
+    
+    public function isLikedBy($user){
+        $liked_users_ids = $this->likedUsers->pluck('id');
+        $result = $liked_users_ids->contains($user->id);
+        //いいねされていればtrue, されていなければfalseが代入される。
+        return $result;
+    }
+    //likesテーブルとリレーション(いいねしているユーザーを取得する用)
+    public function likes(){
+        return $this->hasMany('App\Like');
     }
 }

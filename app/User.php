@@ -44,4 +44,12 @@ class User extends Authenticatable
     public function purchasedItems(){
         return $this->belongsToMany('App\Item', 'orders');
     }
+    
+    public function likes(){
+        return $this->hasMany('App\Like');
+    }
+    
+    public function likeItems(){
+        return $this->belongsToMany('App\Item', 'likes');
+    }
 }

@@ -50,3 +50,4 @@ Route::get('/items/{item}/finish', 'ItemController@finish')->name('items.finish'
 
 //そのほか
 Route::get('/likes', 'LikeController@index')->name('likes.index');
+Route::patch('/items/{item}/toggle_like', 'ItemController@toggleLike')->name('items.toggle_like');

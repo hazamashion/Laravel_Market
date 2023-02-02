@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Item;
 use App\Order;
+use App\Like;
 use Illuminate\Http\Request;
 use App\Http\Requests\ItemRequest;
 use App\Http\Requests\ItemEditRequest;
@@ -29,7 +30,7 @@ class ItemController extends Controller
             //publicディスク(storage/app/public/)のphotosディレクトリに保存
             $path = $image->store('photos', 'public');
         }
-        Item::create([
+        $item = Item::create([
             'user_id' => $user->id,
             'name' => $request->name,
             'description' => $request->description,
@@ -37,8 +38,9 @@ class ItemController extends Controller
             'price' => $request->price,
             'image' => $path,//ファイルパスを保存
         ]);
+        
         session()->flash('success', '商品を追加しました');
-        return redirect()->route('items.show', $user);
+        return redirect()->route('items.show', $item);
     }
     
     public function edit($id){
@@ -150,5 +152,25 @@ class ItemController extends Controller
             'title' => '購入確定',
             'item' => $item,
         ]);
+    }
+    
+    public function toggleLike($id){
+        $user = \Auth::user();
+        $item = Item::find($id);
+        
+        if($item->isLikedBy($user)){
+            //いいねの取り消し
+            $item->likes->where('user_id', $user->id)->first()->delete();
+            \Session::flash('success', 'いいねを取り消しました。');
+        } else {
+            //いいねを設定
+            Like::create([
+                'user_id' => $user->id,
+                'item_id' => $item->id,
+            ]);
+            \Session::flash('success', 'いいねしました。');
+        }
+        //トップページにリダイレクト
+        return redirect('/');
     }
 }

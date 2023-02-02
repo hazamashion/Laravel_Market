@@ -27,7 +27,7 @@
                             <div class="body_main_content">
                                 商品名:{{ $item->name }} {{ $item->price }}
                                 {{ $item->soldItem() ? '売り切れ' : '出品中' }}
-                                カテゴリ:
+                                カテゴリ:{{ $item->category->name }}
                                 ({{ $item->created_at }})
                                 <div class="body_main_content_link">
                                     [<a href="{{ route('items.edit', $item) }}">編集</a>]
