@@ -23,7 +23,9 @@ Route::get('/', 'TopController@index')->name('top');
 //プロフィール関連
 Route::get('/users/{user}', 'UserController@show')->name('users.show');
 Route::get('/profile/edit', 'ProfileController@edit')->name('profile.edit');
+Route::patch('/profile/{user}/edit', 'ProfileController@update')->name('profile.update');
 Route::get('/profile/edit_image', 'ProfileController@editImage')->name('profile.edit_image');
+Route::patch('/profile/{user}/edit_image', 'ProfileController@updateImage')->name('profile.update_image');
 
 //出品関連
 Route::get('/users/{user}/exhibitions', 'UserController@exhibitions')->name('users.exhibitions');

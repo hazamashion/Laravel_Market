@@ -12,6 +12,8 @@ class UserController extends Controller
         $user = User::find($id);
         $count = $user->items()->count();
         $purchased_items = $user->purchasedItems()->get();
+        // dd($purchased_items);
+        
         return view('users.show', [
             'title' => 'プロフィール詳細',
             'user' => $user,

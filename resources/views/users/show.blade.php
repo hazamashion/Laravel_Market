@@ -15,9 +15,12 @@
     <div>
         {{ $user->name }}さん
         <a href="{{ route('profile.edit', $user) }}">プロフィール編集</a>
+        <div class="profile">
+            {{ $user->profile }}
+        </div>
     </div>
     <div>
-        出品数:{{ $count }}
+        <p>出品数:{{ $count }}</p>
     </div>
     <h2>購入履歴</h2>
     <ul>
@@ -26,7 +29,8 @@
                 <a href="{{ route('items.show', $purchased_item) }}">
                     {{ $purchased_item->name }}
                 </a>
-                : {{$purchased_item->price }} 出品者 {{ $purchased_item->user_id }}
+                : {{$purchased_item->price }}円 出品者:
+                {{ $purchased_item->user->name }}
             </li>
         @empty
             購入した商品はありません。

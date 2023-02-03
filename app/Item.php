@@ -41,4 +41,8 @@ class Item extends Model
     public function likes(){
         return $this->hasMany('App\Like');
     }
+    //出品者を取得する用
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
 }
