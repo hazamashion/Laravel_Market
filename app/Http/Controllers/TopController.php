@@ -18,7 +18,7 @@ class TopController extends Controller
     
         return view('top', [
             'title' => 'Market',
-            'items' => $items,
+            'items' => $items->sortByDesc('id'),
         ]);
     }
 }

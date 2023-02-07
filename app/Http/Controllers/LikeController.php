@@ -15,7 +15,7 @@ class LikeController extends Controller
         
         return view('likes.index', [
             'title' => 'お気に入り一覧',
-            'items' => $items->sortByDesc('id'),
+            'items' => $items->sortByDesc('created_at'),
         ]);
     }
     

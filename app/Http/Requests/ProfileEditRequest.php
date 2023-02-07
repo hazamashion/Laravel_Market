@@ -25,7 +25,7 @@ class ProfileEditRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:255'],
-            'profile' => ['max:1000'],
+            'profile' => ['nullable', 'max:1000'],
         ];
     }
 }

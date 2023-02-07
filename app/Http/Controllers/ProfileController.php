@@ -21,6 +21,7 @@ class ProfileController extends Controller
         $user = User::find($id);
         
         $user->update($request->only(['name', 'profile']));
+        
         session()->flash('success', 'プロフィールを編集しました。');
         return redirect()->route('users.show', $user);
     }
