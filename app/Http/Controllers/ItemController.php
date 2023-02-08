@@ -13,6 +13,12 @@ use App\Http\Requests\ItemEditImageRequest;
 
 class ItemController extends Controller
 {
+    //ログイン時でないとアクションが通らないミドルウェア
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function create(){
         $categories = Category::all();
         return view('items.create', [
@@ -23,24 +29,30 @@ class ItemController extends Controller
     
     public function store(ItemRequest $request){
         $user = \Auth::user();
-        //画像投稿処理
-        $path = '';
-        $image = $request->file('image');
-        if( isset($image) === true ){
-            //publicディスク(storage/app/public/)のphotosディレクトリに保存
-            $path = $image->store('photos', 'public');
+        $category_id = $request->category_id;
+        if( Category::find($category_id) !== null){
+            //画像投稿処理
+            $path = '';
+            $image = $request->file('image');
+            if( isset($image) === true ){
+                //publicディスク(storage/app/public/)のphotosディレクトリに保存
+                $path = $image->store('photos', 'public');
+            }
+            $item = Item::create([
+                'user_id' => $user->id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'category_id' => $request->category_id,
+                'price' => $request->price,
+                'image' => $path,//ファイルパスを保存
+            ]);
+            
+            session()->flash('success', '商品を追加しました');
+            return redirect()->route('items.show', $item);            
+        } else {
+            session()->flash('error', '存在しないカテゴリーです。');
+            return redirect()->route('items.create');
         }
-        $item = Item::create([
-            'user_id' => $user->id,
-            'name' => $request->name,
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-            'price' => $request->price,
-            'image' => $path,//ファイルパスを保存
-        ]);
-        
-        session()->flash('success', '商品を追加しました');
-        return redirect()->route('items.show', $item);
     }
     
     public function edit($id){
@@ -55,11 +67,19 @@ class ItemController extends Controller
     }
     
     public function update($id, ItemEditRequest $request){
-        $item = Item::find($id);
-        $item->update($request->only(['name', 'destroy', 'price', 'category_id']));
         
-        session()->flash('success', '商品を編集しました。');
-        return redirect()->route('items.show', $item);
+        $item = Item::find($id);
+        $category_id = $request->category_id;
+        
+        if( Category::find($category_id) !== null ){
+            $item->update($request->only(['name', 'description', 'price', 'category_id']));
+            
+            session()->flash('success', '商品を編集しました。');
+            return redirect()->route('items.show', $item);    
+        } else {
+            session()->flash('error', '存在しないカテゴリーです。');
+            return redirect()->route('items.show', $item);
+        }
     }
     
     public function editImage($id){
@@ -107,14 +127,19 @@ class ItemController extends Controller
     }
     
     public function show($id){
-        $item = Item::find($id);
-        $category = Category::find($item->category_id);
-        
-        return view('items.show', [
-            'title' => '商品詳細',
-            'item' => $item,
-            'category' => $category,
-        ]);
+        if( Item::find($id) !== null ){
+            $item = Item::find($id);
+            $category = Category::find($item->category_id);
+            
+            return view('items.show', [
+                'title' => '商品詳細',
+                'item' => $item,
+                'category' => $category,
+            ]);            
+        } else {
+            session()->flash('error', 'その商品はありません。');
+            return redirect()->route('top');
+        }
     }
     
     public function confirm($id){
@@ -140,8 +165,9 @@ class ItemController extends Controller
         
         session()->flash('success', '購入が完了しました。');
         return redirect()->route('items.finish', $item);
+        
         } else {
-            session()->flash('', '申し訳ありません。ちょっと前に売り切れました。');
+            session()->flash('error', '申し訳ありません。ちょっと前に売り切れました。');
             return redirect()->route('items.show', $item);
         }
     }

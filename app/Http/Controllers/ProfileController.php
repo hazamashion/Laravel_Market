@@ -9,6 +9,12 @@ use App\Http\Requests\ProfileEditImageRequest;
 
 class ProfileController extends Controller
 {
+    //ログイン時でないとアクションが通らないミドルウェア
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function edit(){
         $user = \Auth::user();
         return view('profile.edit', [

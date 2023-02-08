@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class LikeController extends Controller
 {
+    //ログイン時でないとアクションが通らないミドルウェア
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index(){
         $user = \Auth::user();
         $item_ids = Like::where('user_id', $user->id)->pluck('item_id');
@@ -17,11 +23,5 @@ class LikeController extends Controller
             'title' => 'お気に入り一覧',
             'items' => $items->sortByDesc('created_at'),
         ]);
-    }
-    
-    //ログイン時でないとアクションが通らないミドルウェア
-    public function __construct()
-    {
-        $this->middleware('auth');
     }
 }

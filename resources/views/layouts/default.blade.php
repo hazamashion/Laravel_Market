@@ -20,10 +20,10 @@
         </div>
     @endif
     
-    {{-- 売り切れメッセージを出力 --}}
-    @if (\Session::has('sold'))
-        <div class="sold">
-            {{ \Session::get('sold') }}
+    {{-- 失敗メッセージを出力 --}}
+    @if (\Session::has('error'))
+        <div class="error">
+            {{ \Session::get('error') }}
         </div>
     @endif
     
