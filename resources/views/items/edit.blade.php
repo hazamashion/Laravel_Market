@@ -25,7 +25,7 @@
                 <p>カテゴリー:</p>
                 <select name="category_id">
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <option value="{{ $category->id }}" {{ $category->id === $item->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
                     @endforeach
                 </select>
             </label>

@@ -57,6 +57,12 @@ class ItemController extends Controller
     
     public function edit($id){
         $item = Item::find($id);
+        
+        if($item->user_id !== \Auth::user()->id){
+            session()->flash('error','不正な操作です。');
+            return redirect('/');
+        }
+        
         $categories = Category::all();
         
         return view('items.edit', [
@@ -69,11 +75,14 @@ class ItemController extends Controller
     public function update($id, ItemEditRequest $request){
         
         $item = Item::find($id);
+        if($item->user_id !== \Auth::user()->id){
+            session()->flash('error','不正な操作です。');
+            return redirect('/');
+        }
         $category_id = $request->category_id;
         
         if( Category::find($category_id) !== null ){
             $item->update($request->only(['name', 'description', 'price', 'category_id']));
-            
             session()->flash('success', '商品を編集しました。');
             return redirect()->route('items.show', $item);    
         } else {

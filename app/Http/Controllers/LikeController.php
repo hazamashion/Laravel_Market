@@ -16,8 +16,7 @@ class LikeController extends Controller
     
     public function index(){
         $user = \Auth::user();
-        $item_ids = Like::where('user_id', $user->id)->latest('created_at')->pluck('item_id');
-        $items = Item::find($item_ids);
+        $items = $user->likeItems()->latest('likes.created_at')->get();
         
         return view('likes.index', [
             'title' => 'お気に入り一覧',
