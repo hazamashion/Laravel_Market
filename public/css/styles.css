@@ -37,3 +37,15 @@
 .body_main_top_img img{
   width: 100%;
 }
+/*管理画面*/
+.item_table {
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+.item_table th, .item_table td {
+	border: solid 1px black;
+	padding: 5px;
+}
+.admin_image {
+	max-height: 200px;
+}

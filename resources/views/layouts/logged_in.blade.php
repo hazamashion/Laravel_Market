@@ -26,6 +26,13 @@
                 出品商品一覧
             </a>
         </li>
+        @if(Auth::user()->email === 'admin@admin.com')
+            <li>
+                <a href="{{ route('admin') }}">
+                    管理画面
+                </a>
+            </li>
+        @endif
         <li>
             <form action="{{ route('logout') }}" method="post">
                 @csrf

@@ -12,7 +12,6 @@
 				<tr>
 					<th>名前</th>
 					<th>金額</th>
-					<th>在庫数</th>
 					<th>説明</th>
 					<th>画像</th>
 					<th>操作</th>
@@ -23,7 +22,6 @@
 				<tr>
 					<td>{{ $item->name }}</td>
 					<td>{{ $item->price }}</td>
-					<td>{{ $item->stock }}</td>
 					<td>{{ $item->description }}</td>
 					<td>
 					    @if($item->image !== '')

@@ -17,7 +17,10 @@ Route::get('/welcom', function () {
 //ログインに関するルーティング
 Auth::routes();
 
-//管理者用の認証ルート
+//logginユーザーのナビゲーション→管理ユーザーなら遷移可能ルート
+Route::get('/admin', 'Admin\AdminController')->name('admin');
+
+//管理者用の認証ルート（未実装）
 Route::get('admin/login', 'Admin\AuthController@showLoginForm')->name('admin.login');
 Route::post('admin/login', 'Admin\AuthController@login')->name('admin.login.submit');
 Route::post('admin/logout', 'Admin\AuthController@logout')->name('admin.logout');
