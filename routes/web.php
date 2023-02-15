@@ -17,6 +17,11 @@ Route::get('/welcom', function () {
 //ログインに関するルーティング
 Auth::routes();
 
+//管理者用の認証ルート
+Route::get('admin/login', 'Admin\AuthController@showLoginForm')->name('admin.login');
+Route::post('admin/login', 'Admin\AuthController@login')->name('admin.login.submit');
+Route::post('admin/logout', 'Admin\AuthController@logout')->name('admin.logout');
+
 //トップページ
 Route::get('/', 'TopController@index')->name('top');
 
