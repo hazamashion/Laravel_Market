@@ -9,8 +9,6 @@
             <li class="item">
                 <div class="content">
                     <div class="body">
-                        <div class="body_heading">
-                        </div>
                         <div class="body_main">
                             <div class="body_main_top">
                                 <div class="body_main_top_img">
@@ -22,7 +20,6 @@
                                     {{ $item->description }}
                                 </div>
                             </div>
-
                             <div class="body_main_content">
                                 商品名:{{ $item->name }} {{ $item->price }}
                                 {{ $item->soldItem() ? '売り切れ' : '出品中' }}

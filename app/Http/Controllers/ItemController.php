@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ItemRequest;
 use App\Http\Requests\ItemEditRequest;
 use App\Http\Requests\ItemEditImageRequest;
+use Intervention\Image\Facades\Image;
 
 class ItemController extends Controller
 {
@@ -30,25 +31,40 @@ class ItemController extends Controller
     public function store(ItemRequest $request){
         $user = \Auth::user();
         $category_id = $request->category_id;
-        if( Category::find($category_id) !== null){
-            //画像投稿処理
-            $path = '';
+        if( Category::find($category_id) !== null ){
+            // 画像投稿処理
             $image = $request->file('image');
-            if( isset($image) === true ){
-                //publicディスク(storage/app/public/)のphotosディレクトリに保存
-                $path = $image->store('photos', 'public');
+            $resizedFilePath = null; // 初期化
+            
+            if (isset($image)) {
+                $filename = $image->hashName();
+                //Intervention Imageライブラリを使用して画像を読み込むためのコード
+                $img = Image::make($image);
+                //最大幅・最大高さが320pxに収まるようにリサイズ
+                $img->resize(320, 320, function ($constraint) {
+                    //画像のアスペクト比を保持しながらリサイズ
+                    $constraint->aspectRatio();
+                    //元の画像よりも大きくならないようにする
+                    $constraint->upsize();
+                });
+            
+                // リサイズされた画像のファイルパスを保存する
+                $resizedFilename = 'resized-' . $filename;
+                $img->save(storage_path('app/public/photos/' . $resizedFilename));
+                $resizedFilePath = 'photos/' . $resizedFilename;
             }
+    
             $item = Item::create([
-                'user_id' => $user->id,
+                'user_id' => \Auth::user()->id,
                 'name' => $request->name,
                 'description' => $request->description,
                 'category_id' => $request->category_id,
                 'price' => $request->price,
-                'image' => $path,//ファイルパスを保存
+                'image' => $resizedFilePath,
             ]);
-            
+    
             session()->flash('success', '商品を追加しました');
-            return redirect()->route('items.show', $item);            
+            return redirect()->route('items.show', $item);
         } else {
             session()->flash('error', '存在しないカテゴリーです。');
             return redirect()->route('items.create');
@@ -75,10 +91,12 @@ class ItemController extends Controller
     public function update($id, ItemEditRequest $request){
         
         $item = Item::find($id);
+        
         if($item->user_id !== \Auth::user()->id){
             session()->flash('error','不正な操作です。');
             return redirect('/');
         }
+        
         $category_id = $request->category_id;
         
         if( Category::find($category_id) !== null ){
@@ -196,14 +214,14 @@ class ItemController extends Controller
         if($item->isLikedBy($user)){
             //いいねの取り消し
             $item->likes->where('user_id', $user->id)->first()->delete();
-            \Session::flash('success', 'いいねを取り消しました。');
+            \Session::flash('success', 'お気に入りを取り消しました。');
         } else {
             //いいねを設定
             Like::create([
                 'user_id' => $user->id,
                 'item_id' => $item->id,
             ]);
-            \Session::flash('success', 'いいねしました。');
+            \Session::flash('success', 'お気に入りに追加しました。');
         }
         //トップページにリダイレクト
         return redirect('/');
