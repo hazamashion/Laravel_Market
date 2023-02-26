@@ -17,10 +17,6 @@ class Item extends Model
         return $this->belongsToMany('App\User', 'orders');
     }
     
-    // public function sold(){
-    //     return $this->hasOne('App\Order');
-    // }
-    
     public function soldItem(){
         //Ordersテーブルに商品のidが存在するならtrue、つまり売り切れ
         $result = Order::where('item_id', $this->id)->exists();
