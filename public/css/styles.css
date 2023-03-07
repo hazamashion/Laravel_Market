@@ -54,3 +54,21 @@ body {
 .admin_image {
 	max-height: 200px;
 }
+.ratio {
+    position: relative;
+}
+.ratio:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+.bg-image {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}

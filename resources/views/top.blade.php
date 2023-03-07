@@ -9,7 +9,9 @@
                 <div class="item col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="card">
                         <a href="{{ route('items.show', $item->id) }}">
-                            <img loading='lazy' src="{{ asset('/storage/' . $item->image) }}" class="card-img-top" alt="{{ $item->name }}">
+                            <div class="ratio ratio-1x1">
+                                <div class="bg-image" style="background-image:url('{{ asset('/storage/' . $item->image) }}');"></div>
+                            </div>
                         </a>
                         <div class="card-body">
                             <h5 class="card-title">{{ $item->name }}</h5>
