@@ -22,26 +22,6 @@ body {
 .delete {
   display: inline;
 }
-/* トップページのスタイル */
-.items {
-  padding: 0;
-}
-.item {
-  /*margin: 10px;*/
-  /*list-style: none;*/
-  /*border: solid 1px black;*/
-  /*border-bottom: solid 1px black;*/
-}
-/*.body_main_top {*/
-/*  display: flex;*/
-/*}*/
-/*.card img {*/
-/*  width: 200px;*/
-  /*height: 200px;*/
-/*}*/
-.content_img img{
-  width: 100%;
-}
 /*管理画面*/
 .item_table {
 	border-collapse: collapse;

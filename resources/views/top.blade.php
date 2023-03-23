@@ -10,7 +10,7 @@
                     <div class="card">
                         <a href="{{ route('items.show', $item->id) }}">
                             <div class="ratio ratio-1x1">
-                                <div class="bg-image" style="background-image:url('{{ asset('/storage/' . $item->image) }}');"></div>
+                            <div class="bg-image" style="background-image:url('{{ Storage::url($item->image) }}');"></div>
                             </div>
                         </a>
                         <div class="card-body">

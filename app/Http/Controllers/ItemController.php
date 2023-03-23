@@ -31,6 +31,7 @@ class ItemController extends Controller
     public function store(ItemRequest $request){
         $user = \Auth::user();
         $category_id = $request->category_id;
+        //存在しないカテゴリーを防ぐ
         if( Category::find($category_id) !== null ){
             // 画像投稿処理
             $image = $request->file('image');
